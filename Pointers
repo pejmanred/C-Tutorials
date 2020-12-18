@@ -1,0 +1,40 @@
+#include <QCoreApplication>
+#include <iostream>
+using namespace std;
+
+void chang(int *k);
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+
+    int varr=587;        #Init variable
+    int *va=&varr;       #Pointer to Variable
+    cout << "Var value: "<<varr<<endl;
+    cout << "Var address: "<< &varr<<endl;
+
+    cout << "va point to address: "<< va<<endl;
+    cout << "va point  to value : "<< *va<<endl;
+    *va=2002;                                       #Update the variable value by pointer
+    cout << "va point to address(1): "<< va<<endl;
+    cout << "va point  to value(1) : "<< *va<<endl;
+    chang(&varr);                                  #Update the variable value by pointer through a function   
+    cout <<"After func: "<< varr<<endl;
+
+
+
+    return a.exec();
+}
+
+void chang(int *k)
+{
+    *k = *k +10;
+}
+*********************************
+Var value: 587
+Var address: 0x65fdec
+va point to address: 0x65fdec
+va point  to value : 587
+va point to address(1): 0x65fdec
+va point  to value(1) : 2002
+After func: 2012
