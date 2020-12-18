@@ -5,6 +5,9 @@ using namespace std;
 
 class cal{
 public:
+    cal(string H){
+        setname(H);
+    }
     void setname(string namee){
         name=namee;
     }
