@@ -1,0 +1,60 @@
+#include <QCoreApplication>
+#include <iostream>
+#include <string>
+using namespace std;
+
+class cal{
+public:
+    void setname(string namee){
+        name=namee;
+    }
+    string getname(){
+        return name;
+    }
+
+    void setage(int xx){
+        x=xx;
+    }
+    int getage(){
+        return x;
+    }
+
+private:
+    int x;
+    string name;
+};
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+    string s;
+    int ag;
+    cal myob;
+    myob.setname("Car");
+    myob.setage(100);
+
+    cout << "Name is: "<< myob.getname() <<endl;
+    cout << "Age is: "<< myob.getage() <<endl;
+    cout << "Enter Name: "<<endl;
+    getline (cin, s);
+    myob.setname(s);
+
+    cout << "Enter Age: "<<endl;
+
+    cin >> ag;
+    myob.setage(ag);
+    cout << "Name is: "<< myob.getname() <<endl;
+    cout << "Age is: "<< myob.getage() <<endl;
+
+    return a.exec();
+}
+
+**************************************
+Name is: Car
+Age is: 100
+Enter Name:
+BMW
+Enter Age:
+95
+Name is: BMW
+Age is: 95
+
