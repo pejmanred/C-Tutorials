@@ -1,0 +1,148 @@
+#include <QCoreApplication>
+#include <pthread.h>
+#include <iostream>
+#include <unistd.h>
+#include <stdlib.h>
+using namespace std;
+
+/* Threads 101
+void *myturn(void * arg){
+    for(int i=0; i < 8; i++)
+    {
+        sleep(1);
+        cout <<Proc 1 "<< i <<endl;
+    }
+    return NULL;
+}
+
+void yourturn(){
+    for(int i=0; i < 3; i++)
+    {
+        sleep(2);
+        cout <<"Proc 2 "<< i <<endl;
+    }
+
+}
+int main()
+{
+
+    pthread_t newthread;
+    pthread_create(&newthread, NULL, myturn, NULL);
+    yourturn();
+    pthread_join(newthread,NULL);
+}*/
+
+//*******************************Sending a value to thread via Main()*************
+/*void *myturn(void *arg){
+    int *iptr = (int *)arg;
+    for(int i=0; i < 8; i++)
+    {
+        sleep(1);
+        cout <<"My Turn "<< i <<" " << *iptr<<endl;
+        (*iptr)++;
+    }
+    return NULL;
+}
+
+
+void yourturn(){
+    for(int i=0; i < 3; i++)
+    {
+        sleep(2);
+        cout <<"****YOUR TURN**** "<< i  <<endl;
+    }
+}
+
+
+
+int main()
+{
+    //Passing a value to a thread v
+
+    pthread_t newthread;
+    int v=5;
+    pthread_create(&newthread, NULL, myturn, &v);
+    yourturn();
+    pthread_join(newthread,NULL);
+    cout <<" Thread is done " << v <<endl;
+    //return a.exec();
+}*/
+//**************************Using a variable in the thread and return the address to MAin()************
+
+void *myturn(void *arg){
+    int *iptr = (int *)malloc(sizeof(int));
+    *iptr=5;
+    for(int i=0; i < 8; i++)
+    {
+        sleep(1);
+        cout <<"My Turn "<< i <<" " << *iptr<<endl;
+        (*iptr)++;
+    }
+    return iptr;
+}
+
+
+void yourturn(){
+    for(int i=0; i < 3; i++)
+    {
+        sleep(2);
+        cout <<"****YOUR TURN**** "<< i  <<endl;
+    }
+}
+
+
+
+int main()
+{
+
+    //Passing a value to a thread v
+    pthread_t newthread;
+    int *ress;
+    pthread_create(&newthread, NULL, myturn, NULL);
+    yourturn();
+    pthread_join(newthread, (void **)&ress);
+    cout <<" Thread is done " << *ress <<endl;
+    //return a.exec();
+}
+
+/*
+ // C programming allows to return an array from a function. Similarly, C also allows to return a pointer from a function.
+ //To do so, you would have to declare a function returning a pointer as in the following example
+
+#include <stdio.h>
+#include <time.h>
+
+// function to generate and return random numbers.
+int * getRandom( ) {
+
+   static int  r[10];
+   int i;
+
+    //set the seed
+   srand( (unsigned)time( NULL ) );
+
+   for ( i = 0; i < 10; ++i) {
+      r[i] = rand();
+      printf("%d\n", r[i] );
+   }
+
+   return r;
+}
+
+ //main function to call above defined function
+int main () {
+
+   // a pointer to an int
+   int *p;
+   int i;
+
+   p = getRandom();
+
+   for ( i = 0; i < 10; i++ ) {
+      printf("*(p + [%d]) : %d\n", i, *(p + i) );
+   }
+
+   return 0;
+}
+
+*/
