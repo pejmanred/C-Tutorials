@@ -1,0 +1,69 @@
+
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+
+void Work(char *name)
+{
+	const int NT=5;
+	for (int i=0;  i<NT; i++)
+	{
+		sleep(rand() % 4);
+		//sleep(1);   
+		/* if we dont use any sleep() then PARENTS gets run then Child
+			I am: 13287
+			I am the PARENT, waiting for the child to end.
+			Done pass 0 for Parent
+			Done pass 1 for Parent
+			Done pass 2 for Parent
+			Done pass 3 for Parent
+			Done pass 4 for Parent
+			I am the child with 13288:
+			Done pass 0 for Child
+			Done pass 1 for Child
+			Done pass 2 for Child
+			Done pass 3 for Child
+			Done pass 4 for Child
+			Parent ending.
+
+		 */
+		printf("Done pass %d for %s\n",i,name);
+	}
+} 
+
+int main(int argc, char *argv[])
+{
+    printf("I am: %d\n", (int) getpid());
+    pid_t pid = fork(); 
+    if (pid < 0) {printf("ERROR\n");}
+    if (pid == 0) 
+		{
+			printf("I am the child with %d:\n", (int) getpid());
+			Work("Child");
+			//exit(0); 0 is standat value return that shows success! we can change it(below).
+			exit(42);
+		}
+			
+    if (pid > 0) 
+		{
+			printf("I am the PARENT, waiting for the child to end.\n");
+			Work("Parent");
+			//wait(NULL);  gets the value from child process // it lets fork run after the last time the main get executed and print the last Child.
+			int status = 0;
+			pid_t childpid = wait(&status);
+			printf("Parents knows child %d finished with status %d.\n",(int)childpid, status);
+			int childReturnValue = WEXITSTATUS(status);
+			printf("    Return value was %d\n",childReturnValue);
+			printf("Parent ending.\n");
+			
+		}
+     
+    //printf("Fork returned: %d\n", (int) pid);      These two lines would work in child_fork run if we did not use exit() in line 17
+	//printf("I am: %d\n", (int) getpid());
+	return 0;
+}
+
+ // fork stopes here and doesn't continue, by using exit
