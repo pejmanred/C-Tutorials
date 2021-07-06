@@ -1,0 +1,45 @@
+#include "stdafx.h"
+#include <string.h>
+#include<iostream>
+#include <stdio.h>
+using namespace std;
+
+int* createTargetArray(int* nums, int numsSize, int* index, int indexSize)
+{
+
+	int *ptr = (int *)malloc(sizeof(numsSize)*indexSize);
+
+	for (int i = 0; i<indexSize; i++)				              // i=3
+	{
+		if (index[i]<indexSize - 1)				                  //2 <4
+		{
+			for (int j = indexSize - 1; j>index[i]; j--)	    //j=4 ;j> 2; j-- | j=3; 3>0; j-- |j=2 > 0 j-- | j=1>0 j--(0)
+			{
+				ptr[j] = ptr[j - 1];				                    //ptr[4] = ptr[3], ptr[3] = ptr[2],  ptr[2] = ptr[1], ptr[1] = ptr[0]
+			}
+		}
+		ptr[index[i]] = nums[i];	                          //ptr[0] = nums[0] -> ptr[0]=0
+	}
+
+	//*returnSize = numsSize;
+	return (ptr);
+}
+
+int main(int argc, char* argv[]) 
+{
+
+	int nums[] = { 0,1,2,3,4 };
+	int index[] = { 0,1,2,2,1 };
+
+	int *ret;
+
+	ret = createTargetArray(nums, 5, index, 5);
+	
+	for (int k = 0; k < 5; k++) 
+  {
+		cout << *(ret + k);
+		cout << " ";
+	}
+	getchar();
+	return 0;
+}
